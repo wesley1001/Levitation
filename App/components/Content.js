@@ -35,7 +35,7 @@ var Content = React.createClass({
   componentWillMount() {
     if (this.state.needsAsyncStorageFetch) {
       // Clear async data to simulate first open
-      AsyncStorage.clear();
+      //AsyncStorage.clear();
 
       AsyncStorageActions.getAsyncStorageData();  
     }
@@ -71,7 +71,6 @@ var Content = React.createClass({
    * @param {obj} timelineEvent - The pressed event.
    */
   _handleTimelineEventPress(timelineEvent) {
-    console.log("event", timelineEvent);
     // TODO: Probably a better functional way to do this.  Come up with structure-independent way.
     var eventDay = stringUtils.parseDate(timelineEvent.datetime),
       // Create copy of schedule to pass to `setState` after prop change.
@@ -81,11 +80,10 @@ var Content = React.createClass({
 
     // TODO: Find a non-stupid way to do this.  Something like a deep _.findWhere
     // (which is supposed to be deep per docs??) - https://lodash.com/docs#findWhere
-    _.each(stages, function(stage) {
-      if (!eventObj) {
-        eventObj = _.find(stage.lineup, {id: timelineEvent.id});
-      }
-    });
+    for (let i=0, l=stages.length; i<l; i++) {
+      if (eventObj) break;
+      eventObj = _.find(stages[i].lineup, {id: timelineEvent.id});
+    }
 
     eventObj.selected = !eventObj.selected;
 
