@@ -8,7 +8,7 @@ var {
   StyleSheet
 } = React;
 
-var TimelineEvent = React.createClass({
+var DayViewStageEvent = React.createClass({
   propTypes: {
     id: React.PropTypes.number.isRequired,
     name: React.PropTypes.string.isRequired,
@@ -18,7 +18,7 @@ var TimelineEvent = React.createClass({
   },
 
   render() {
-    var time = stringUtils.parseTime(this.props.datetime, true);
+    var time = stringUtils.parseTime(this.props.datetime);
 
     return (
       <TouchableOpacity onPress={this.props.onPress}>
@@ -43,4 +43,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = TimelineEvent;
+module.exports = DayViewStageEvent;

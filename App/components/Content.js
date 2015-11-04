@@ -2,10 +2,9 @@ var React = require('react-native'),
   AsyncStorageActions = require("../actions/AsyncStorageActions"),
   ServerActions = require('../actions/ServerActions'),
   Store = require("../stores/Store"),
-  TimelineEvent = require("./TimelineEvent"),
+  DayView = require("./DayView"),
   _ = require("lodash"),
-  stringUtils = require("../utils/StringUtils"),
-  moment = require("moment");
+  stringUtils = require("../utils/StringUtils");
 
 var {
   ScrollView,
@@ -81,8 +80,8 @@ var Content = React.createClass({
     // TODO: Find a non-stupid way to do this.  Something like a deep _.findWhere
     // (which is supposed to be deep per docs??) - https://lodash.com/docs#findWhere
     for (let i=0, l=stages.length; i<l; i++) {
-      if (eventObj) break;
       eventObj = _.find(stages[i].lineup, {id: timelineEvent.id});
+      if (eventObj) break;
     }
 
     eventObj.selected = !eventObj.selected;
@@ -98,19 +97,13 @@ var Content = React.createClass({
 
     return (
       <ScrollView contentContainerSyle={styles.container}>
-        {days.map(day => { 
-          return <View key={day}>
-          <View style={[styles.row, {justifyContent: 'center'}]}><Text style={styles.day}>{moment(day).format("MMM d")}</Text></View>
-          <View style={styles.row}>
-          {this.state.schedule[day].map(stage => {
-            return <View key={stage.stageId} style={styles.column}>
-              {stage.lineup.map(timelineEvent => {
-                return <TimelineEvent key={timelineEvent.id} {...timelineEvent} onPress={this._handleTimelineEventPress.bind(this, timelineEvent)} />
-              })}
-            </View>
-          })}
-          </View>
-        </View>
+        {days.map((day, i) => { 
+          return <DayView 
+            key={i} 
+            day={day} 
+            stages={this.state.schedule[day]} 
+            eventPressHandler={this._handleTimelineEventPress} 
+          />;
         })}
       </ScrollView>
     );
@@ -122,20 +115,6 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  column: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    margin: 5
-  },
-  day: {
-    fontSize: 20,
-    textAlign: 'center'
   }
 });
 
