@@ -39,7 +39,7 @@ var StringUtils = {
    * @param  {boolean} includePeriod - Include am/pm
    * @return {Moment} - e.g. 8:45 pm
    */
-  parseTime(datetime, includePeriod) {
+  parseTime(datetime, includePeriod=true) {
     var format = includePeriod ? "h:mm a" : "h:mm";
 
     return moment(datetime).format(format);
