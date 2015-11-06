@@ -4,31 +4,14 @@
 
 'use strict';
 
-var React = require('react-native'),
-  Header = require('./App/components/Header'),
-  Content = require('./App/components/Content');
+const React = require('react-native'),
+  App = require('./App/components/App');
 
-var {
-  AppRegistry,
-  StyleSheet,
-  View
-} = React;
+const { AppRegistry } = React;
 
-var Levitation = React.createClass({
+const Levitation = React.createClass({
   render() {
-    return (
-      <View style={styles.container}>
-        <Header />
-        <Content />
-      </View>
-    );
-  }
-});
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 50
+    return <App />;
   }
 });
 

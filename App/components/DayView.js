@@ -2,7 +2,8 @@ var React = require("react-native"),
   DayViewStage = require("./DayViewStage"),
   moment = require("moment");
 
-var { 
+var {
+  ScrollView,
   View,
   Text,
   StyleSheet 
@@ -18,16 +19,16 @@ var DayView = React.createClass({
     var { day, stages, ...other } = this.props;
 
     return (
-      <View key={this.props.day}>
+      <ScrollView contentContainerSyle={styles.contentContainer}>
         <View style={[styles.row, {justifyContent: 'center'}]}>
-          <Text style={styles.day}>{moment(day).format("MMM d")}</Text>
+          <Text style={styles.day}>{moment(day).format("MMM D")}</Text>
         </View>
         <View style={styles.row}>
-        {this.props.stages.map((stage, i) => {
-          return <DayViewStage key={i} {...stage} {...other} />
-        })}
+          {stages.map((stage, i) => {
+            return <DayViewStage key={i} {...stage} {...other} />
+          })}
         </View>
-      </View>
+      </ScrollView>
     );
   }
 });

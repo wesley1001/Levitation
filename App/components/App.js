@@ -1,32 +1,24 @@
-var React = require('react-native'),
+const React = require('react-native'),
   AsyncStorageActions = require("../actions/AsyncStorageActions"),
   ServerActions = require('../actions/ServerActions'),
-  Store = require("../stores/Store"),
+  StoreMixin = require('../mixins/StoreMixin'),
+  Header = require('./Header'),
   DayView = require("./DayView"),
   _ = require("lodash"),
   stringUtils = require("../utils/StringUtils");
 
-var {
+const {
   ScrollView,
   View,
   Text,
+  TouchableOpacity,
   StyleSheet,
-  AsyncStorage
+  AsyncStorage,
+  Navigator
 } = React;
 
-function getStateFromStore() {
-  return { 
-    schedule: Store.getSchedule(),
-    needsAsyncStorageFetch: Store.needsAsyncStorageFetch(),
-    needsServerFetch: Store.needsServerFetch(),
-    isDataReady: Store.isDataReady()
-  };
-}
-
-var Content = React.createClass({
-  getInitialState() {
-    return getStateFromStore();
-  },
+const App = React.createClass({
+  mixins: [StoreMixin],
 
   /**
    * On initial load, try to get existing data from local storage.
@@ -40,14 +32,6 @@ var Content = React.createClass({
     }
   },
 
-  componentDidMount() {
-    Store.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount() {
-    Store.removeChangeListener(this._onChange);
-  },
-
   /**
    * If no data return from AsyncStorage in `componentWillMount()`, make server fetch.
    * This will be called as part of normal lifecycle if getAsyncStorageData fails.
@@ -58,11 +42,12 @@ var Content = React.createClass({
     }
   },
 
-  /**
-   * Event handler for 'change' events coming from the stores
-   */
-  _onChange() {
-    this.setState(getStateFromStore());
+  _handleBackNav() {
+    this.refs.navigator.pop();
+  },
+
+  _handleForwardNav() {
+    this.refs.navigator.push({day: "2015-05-09"});
   },
 
   /**
@@ -91,31 +76,41 @@ var Content = React.createClass({
   },
 
   render() {
-    if (_.isEmpty(this.state.schedule)) { return <View />; }
-
-    var days = _.keys(this.state.schedule);
+    if (!this.state.isDataReady) { return <View />; }
 
     return (
-      <ScrollView contentContainerSyle={styles.container}>
-        {days.map((day, i) => { 
-          return <DayView 
-            key={i} 
-            day={day} 
-            stages={this.state.schedule[day]} 
-            eventPressHandler={this._handleTimelineEventPress} 
-          />;
-        })}
-      </ScrollView>
+      <View style={styles.container}>
+        <View>
+            <TouchableOpacity onPress={this._handleBackNav}><Text>{'< Back'}</Text></TouchableOpacity>
+            <TouchableOpacity onPress={this._handleForwardNav}><Text>{'Forward >'}</Text></TouchableOpacity>
+        </View>
+        <Header />
+        <Navigator
+          ref="navigator"
+          initialRoute={{day: "2015-05-08"}}
+          renderScene={(route, navigator) =>     
+            <DayView 
+              key={route.day} 
+              day={route.day} 
+              stages={this.state.schedule[route.day]} 
+              eventPressHandler={this._handleTimelineEventPress} 
+            />
+          }
+        />
+      </View>
     );
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
+    paddingTop: 50
+  },
+  contentContainer: {
+    flex: 1,
     justifyContent: 'center',
   }
 });
 
-module.exports = Content;
+module.exports = App;

@@ -26,14 +26,10 @@ var Header = React.createClass({
 
 var styles = StyleSheet.create({
   row: {
-    //borderWidth: 1,
-    //borderColor: 'blue',
     flexDirection: 'row',
   },
   column: {
     flex: 1,
-    //borderWidth: 1,
-    //borderColor: 'green',
     flexDirection: 'column',
     alignItems: 'stretch',
     margin: 5
