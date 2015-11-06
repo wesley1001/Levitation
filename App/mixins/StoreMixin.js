@@ -5,12 +5,14 @@ function getStateFromStore() {
     schedule: Store.getSchedule(),
     needsAsyncStorageFetch: Store.needsAsyncStorageFetch(),
     needsServerFetch: Store.needsServerFetch(),
-    isDataReady: Store.isDataReady()
+    isDataReady: Store.isDataReady(),
+    navIndex: 0 // Remove this from Store state eventually.
   };
 }
 
 const StoreMixin = {
   getInitialState() {
+    console.log("store");
     return getStateFromStore();
   },
 

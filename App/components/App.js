@@ -26,7 +26,7 @@ const App = React.createClass({
   componentWillMount() {
     if (this.state.needsAsyncStorageFetch) {
       // Clear async data to simulate first open
-      //AsyncStorage.clear();
+      AsyncStorage.clear();
 
       AsyncStorageActions.getAsyncStorageData();  
     }
@@ -43,11 +43,17 @@ const App = React.createClass({
   },
 
   _handleBackNav() {
+    var navIndex = this.state.navIndex;
+
     this.refs.navigator.pop();
+    this.setState({navIndex: navIndex - 1});
   },
 
   _handleForwardNav() {
+    var navIndex = this.state.navIndex;
+
     this.refs.navigator.push({day: "2015-05-09"});
+    this.setState({navIndex: navIndex + 1});
   },
 
   /**
@@ -76,18 +82,27 @@ const App = React.createClass({
   },
 
   render() {
+    const days = _.keys(this.state.schedule),
+      lastDay = _.last(days);
+
+    let currentDay = days[this.state.navIndex]
+
     if (!this.state.isDataReady) { return <View />; }
 
     return (
       <View style={styles.container}>
         <View>
+          {this.state.navIndex > 0 &&
             <TouchableOpacity onPress={this._handleBackNav}><Text>{'< Back'}</Text></TouchableOpacity>
+          }
+          {currentDay !== lastDay &&
             <TouchableOpacity onPress={this._handleForwardNav}><Text>{'Forward >'}</Text></TouchableOpacity>
+          }
         </View>
         <Header />
         <Navigator
           ref="navigator"
-          initialRoute={{day: "2015-05-08"}}
+          initialRoute={{day: _.first(_.keys(this.state.schedule))}}
           renderScene={(route, navigator) =>     
             <DayView 
               key={route.day} 
