@@ -50,10 +50,11 @@ const App = React.createClass({
   },
 
   _handleForwardNav() {
-    var navIndex = this.state.navIndex;
+    var navIndex = this.state.navIndex,
+      nextIndex = navIndex + 1;
 
-    this.refs.navigator.push({day: "2015-05-09"});
-    this.setState({navIndex: navIndex + 1});
+    this.refs.navigator.push({day: _.get(this.state.schedule[nextIndex], 'date')});
+    this.setState({navIndex: nextIndex});
   },
 
   /**
@@ -65,7 +66,7 @@ const App = React.createClass({
     var eventDay = stringUtils.parseDate(timelineEvent.datetime),
       // Create copy of schedule to pass to `setState` after prop change.
       schedule = this.state.schedule,
-      stages = schedule[eventDay],
+      stages = _.get(_.find(schedule, {date: eventDay}), 'stages'),
       eventObj;
 
     // TODO: Find a non-stupid way to do this.  Something like a deep _.findWhere
@@ -82,32 +83,32 @@ const App = React.createClass({
   },
 
   render() {
-    const days = _.keys(this.state.schedule),
-      lastDay = _.last(days);
+    const schedule = this.state.schedule,
+      lastDayIndex = _.indexOf(schedule, _.last(schedule));
 
-    let currentDay = days[this.state.navIndex]
+    let navIndex = this.state.navIndex;
 
     if (!this.state.isDataReady) { return <View />; }
 
     return (
       <View style={styles.container}>
         <View>
-          {this.state.navIndex > 0 &&
+          {navIndex > 0 &&
             <TouchableOpacity onPress={this._handleBackNav}><Text>{'< Back'}</Text></TouchableOpacity>
           }
-          {currentDay !== lastDay &&
+          {navIndex !== lastDayIndex &&
             <TouchableOpacity onPress={this._handleForwardNav}><Text>{'Forward >'}</Text></TouchableOpacity>
           }
         </View>
         <Header />
         <Navigator
           ref="navigator"
-          initialRoute={{day: _.first(_.keys(this.state.schedule))}}
+          initialRoute={{day: _.get(_.first(this.state.schedule), 'date')}}
           renderScene={(route, navigator) =>     
             <DayView 
               key={route.day} 
               day={route.day} 
-              stages={this.state.schedule[route.day]} 
+              stages={_.get(_.find(this.state.schedule, {date: route.day}), 'stages')} 
               eventPressHandler={this._handleTimelineEventPress} 
             />
           }
