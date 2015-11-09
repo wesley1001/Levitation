@@ -1,6 +1,5 @@
 const React = require('react-native'),
   AsyncStorageActions = require("../actions/AsyncStorageActions"),
-  ServerActions = require('../actions/ServerActions'),
   StoreMixin = require('../mixins/StoreMixin'),
   Header = require('./Header'),
   DayView = require("./DayView"),
@@ -13,34 +12,11 @@ const {
   Text,
   TouchableOpacity,
   StyleSheet,
-  AsyncStorage,
   Navigator
 } = React;
 
 const App = React.createClass({
   mixins: [StoreMixin],
-
-  /**
-   * On initial load, try to get existing data from local storage.
-   */
-  componentWillMount() {
-    if (this.state.needsAsyncStorageFetch) {
-      // Clear async data to simulate first open
-      AsyncStorage.clear();
-
-      AsyncStorageActions.getAsyncStorageData();  
-    }
-  },
-
-  /**
-   * If no data return from AsyncStorage in `componentWillMount()`, make server fetch.
-   * This will be called as part of normal lifecycle if getAsyncStorageData fails.
-   */
-  componentDidUpdate() {
-    if (!this.state.isDataReady && this.state.needsServerFetch) {
-      ServerActions.fetchScheduleData();
-    }
-  },
 
   _handleBackNav() {
     var navIndex = this.state.navIndex;
@@ -63,7 +39,7 @@ const App = React.createClass({
    */
   _handleTimelineEventPress(timelineEvent) {
     // TODO: Probably a better functional way to do this.  Come up with structure-independent way.
-    var eventDay = stringUtils.parseDate(timelineEvent.datetime),
+    var eventDay = stringUtils.parseDatetime(timelineEvent.datetime),
       // Create copy of schedule to pass to `setState` after prop change.
       schedule = this.state.schedule,
       stages = _.get(_.find(schedule, {date: eventDay}), 'stages'),
@@ -83,34 +59,38 @@ const App = React.createClass({
   },
 
   render() {
-    const schedule = this.state.schedule,
-      lastDayIndex = _.indexOf(schedule, _.last(schedule));
-
     let navIndex = this.state.navIndex;
+
+    const schedule = this.state.schedule,
+      lastDayIndex = _.indexOf(schedule, _.last(schedule)),
+      dates = _.pluck(schedule, 'date'),
+      backNavText = `< ${stringUtils.parseDate(dates[navIndex - 1])}`
+      forwardNavText = `${stringUtils.parseDate(dates[navIndex + 1])} >`;
 
     if (!this.state.isDataReady) { return <View />; }
 
     return (
       <View style={styles.container}>
-        <View>
+        <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
           {navIndex > 0 &&
-            <TouchableOpacity onPress={this._handleBackNav}><Text>{'< Back'}</Text></TouchableOpacity>
+            <TouchableOpacity style={{alignSelf: 'flex-start', flexBasis: 'content', marginLeft: 5}} onPress={this._handleBackNav}><Text>{backNavText}</Text></TouchableOpacity>
           }
+          <View style={{flex: 1}}></View>
           {navIndex !== lastDayIndex &&
-            <TouchableOpacity onPress={this._handleForwardNav}><Text>{'Forward >'}</Text></TouchableOpacity>
+            <TouchableOpacity style={{alignSelf: 'flex-end', flexBasis: 'content', marginRight: 5}} onPress={this._handleForwardNav}><Text>{forwardNavText}</Text></TouchableOpacity>
           }
         </View>
-        <Header />
+        <Header />   
         <Navigator
           ref="navigator"
           initialRoute={{day: _.get(_.first(this.state.schedule), 'date')}}
-          renderScene={(route, navigator) =>     
-            <DayView 
-              key={route.day} 
-              day={route.day} 
-              stages={_.get(_.find(this.state.schedule, {date: route.day}), 'stages')} 
-              eventPressHandler={this._handleTimelineEventPress} 
-            />
+          renderScene={(route, navigator) =>  
+              <DayView 
+                key={route.day} 
+                day={route.day} 
+                stages={_.get(_.find(this.state.schedule, {date: route.day}), 'stages')} 
+                eventPressHandler={this._handleTimelineEventPress} 
+              />
           }
         />
       </View>

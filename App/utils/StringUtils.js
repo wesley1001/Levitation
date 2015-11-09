@@ -30,8 +30,16 @@ var StringUtils = {
    * @param  {string} datetime - In form "YYYY-MM-DDTHH-MM". 
    * @return {string} date - In from "YYYY-MM-DD"
    */
-  parseDate(datetime) {
+  parseDatetime(datetime) {
     return moment(datetime).format("YYYY-MM-DD");
+  },
+
+  /**
+   * @param  {string} date - In form "YYYY-MM-DD". 
+   * @return {string} date - In from "MMM D"
+   */
+  parseDate(date) {
+    return moment(date).format("MMM D");
   },
 
   /**

@@ -1,4 +1,9 @@
-const Store = require("../stores/Store");
+const React = require("react-native"),
+  Store = require("../stores/Store"),
+  AsyncStorageActions = require("../actions/AsyncStorageActions"),
+  ServerActions = require('../actions/ServerActions');
+
+const { AsyncStorage } = React;
 
 function getStateFromStore() {
   return { 
@@ -15,6 +20,28 @@ const StoreMixin = {
     state.navIndex = 0; // Remove this from Store state eventually.
 
     return state;
+  },
+
+  /**
+   * On initial load, try to get existing data from local storage.
+   */
+  componentWillMount() {
+    if (this.state.needsAsyncStorageFetch) {
+      // Clear async data to simulate first open
+      //AsyncStorage.clear();
+
+      AsyncStorageActions.getAsyncStorageData();  
+    }
+  },
+
+  /**
+   * If no data return from AsyncStorage in `componentWillMount()`, make server fetch.
+   * This will be called as part of normal lifecycle if getAsyncStorageData fails.
+   */
+  componentDidUpdate() {
+    if (!this.state.isDataReady && this.state.needsServerFetch) {
+      ServerActions.fetchScheduleData();
+    }
   },
 
   componentDidMount() {
