@@ -67,7 +67,6 @@ const App = React.createClass({
     let navBarProps = {
       dates: _.pluck(schedule, 'date'),
       navIndex: this.state.navIndex,
-      lastDayIndex: _.indexOf(schedule, _.last(schedule)),
       handleBackNav: this.handleBackNav,
       handleForwardNav: this.handleForwardNav
     };

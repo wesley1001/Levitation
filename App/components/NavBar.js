@@ -1,5 +1,6 @@
 const React = require("react-native"),
-  stringUtils = require('../utils/StringUtils');
+  stringUtils = require('../utils/StringUtils'),
+  _ = require("lodash");
 
 const { 
   View,
@@ -11,7 +12,6 @@ var NavBar = React.createClass({
   propTypes: {
     dates: React.PropTypes.array,
     navIndex: React.PropTypes.number,
-    lastDayIndex: React.PropTypes.number,
     handleBackNav: React.PropTypes.func.isRequired,
     handleForwardNav: React.PropTypes.func.isRequired
   },
@@ -21,6 +21,7 @@ var NavBar = React.createClass({
 
     let navIndex = this.props.navIndex,
       dates = this.props.dates,
+      lastDayIndex = _.indexOf(dates, _.last(dates)),
       backNavText = `< ${parseDate(dates[navIndex - 1])}`,
       forwardNavText = `${parseDate(dates[navIndex + 1])} >`;
 
@@ -34,7 +35,7 @@ var NavBar = React.createClass({
           </TouchableOpacity>
         }
         <View style={{flex: 1}}></View>
-        {navIndex !== this.props.lastDayIndex &&
+        {navIndex !== lastDayIndex &&
           <TouchableOpacity 
             style={{alignSelf: 'flex-end', marginRight: 5}} 
             onPress={this.props.handleForwardNav}>
