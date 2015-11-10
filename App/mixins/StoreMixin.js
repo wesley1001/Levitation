@@ -28,7 +28,7 @@ const StoreMixin = {
   componentWillMount() {
     if (this.state.needsAsyncStorageFetch) {
       // Clear async data to simulate first open
-      //AsyncStorage.clear();
+      AsyncStorage.clear();
 
       AsyncStorageActions.getAsyncStorageData();  
     }

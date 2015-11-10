@@ -20,16 +20,18 @@ var DayView = React.createClass({
     var { day, stages, ...other } = this.props;
 
     return (
+      <View>
+      <View style={[styles.row, {justifyContent: 'center'}]}>
+        <Text style={styles.day}>{stringUtils.parseDate(day)}</Text>
+      </View>
       <ScrollView contentContainerSyle={styles.contentContainer}>
-        <View style={[styles.row, {justifyContent: 'center'}]}>
-          <Text style={styles.day}>{stringUtils.parseDate(day)}</Text>
-        </View>
         <View style={styles.row}>
           {stages.map((stage, i) => {
             return <DayViewStage key={i} {...stage} {...other} />
           })}
         </View>
       </ScrollView>
+      </View>
     );
   }
 });
