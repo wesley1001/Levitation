@@ -17,10 +17,9 @@ var NavBar = React.createClass({
   },
 
   render() {
-    const parseDate = stringUtils.parseDate;
-
-    let navIndex = this.props.navIndex,
-      dates = this.props.dates,
+    const dates = this.props.dates,
+      navIndex = this.props.navIndex,
+      parseDate = stringUtils.parseDate,
       lastDayIndex = _.indexOf(dates, _.last(dates)),
       backNavText = `< ${parseDate(dates[navIndex - 1])}`,
       forwardNavText = `${parseDate(dates[navIndex + 1])} >`;
