@@ -15,7 +15,7 @@ function JSONParseReviver(key, value) {
   return value;
 }
 
-var StringUtils = {
+const StringUtils = {
   JSONParser(jsonString) {
     // TODO: Make this a Promise instead
     // TOOD: And handle the error
@@ -48,7 +48,7 @@ var StringUtils = {
    * @return {Moment} - e.g. 8:45 pm
    */
   parseTime(datetime, includePeriod=true) {
-    var format = includePeriod ? "h:mm a" : "h:mm";
+    let format = includePeriod ? "h:mm a" : "h:mm";
 
     return moment(datetime).format(format);
   },

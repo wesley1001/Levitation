@@ -1,9 +1,9 @@
-var React = require("react-native"),
-  DayViewStage = require("./DayViewStage"),
-  moment = require("moment"),
+const React = require('react-native'),
+  DayViewStage = require('./DayViewStage'),
+  moment = require('moment'),
   stringUtils = require('../utils/StringUtils');
 
-var {
+const {
   ScrollView,
   View,
   Text,
@@ -36,7 +36,7 @@ var DayView = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   row: {
     flex: 1,
     flexDirection: 'row'

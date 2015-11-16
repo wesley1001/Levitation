@@ -1,6 +1,6 @@
-var React = require('react-native');
+const React = require('react-native');
 
-var {
+const {
   View,
   Text,
   StyleSheet
@@ -24,7 +24,7 @@ var Header = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },

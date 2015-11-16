@@ -1,20 +1,19 @@
-var Dispatcher = require("../dispatchers/Dispatcher"),
-  Constants = require("../constants/Constants"),
+const Dispatcher = require('../dispatchers/Dispatcher'),
+  Constants = require('../constants/Constants'),
   ActionTypes = Constants.ActionTypes,
-  AsyncStorageActions = require("./AsyncStorageActions"),
-  Store = require("../stores/Store"),
-  StringUtils = require("../utils/StringUtils");
+  AsyncStorageActions = require('./AsyncStorageActions'),
+  Store = require('../stores/Store'),
+  StringUtils = require('../utils/StringUtils');
 
-var ServerActions = {
+let ServerActions = {
   // One-time data fetch from server
   fetchScheduleData() {
-    console.log("Making server request");    
-    // TODO: Why can't I return this as a promise to WebAPIUtils?
+    console.log('Making server request');
     // TODO: Integrate NetInfo to get online/offline status
     fetch(Constants.FETCH_URL)
       .then((response) => {
-        var payloadString = response._bodyText;
-        var schedule = StringUtils.JSONParser(payloadString);
+        let payloadString = response._bodyText;
+        let schedule = StringUtils.JSONParser(payloadString);
         //console.log("server object", schedule);
         
         this._dispatchFetchSuccess(schedule);

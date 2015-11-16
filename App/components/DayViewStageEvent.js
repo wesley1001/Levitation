@@ -1,7 +1,7 @@
-var React = require("react-native"),
-  stringUtils = require("../utils/StringUtils");
+const React = require('react-native'),
+  stringUtils = require('../utils/StringUtils');
 
-var { 
+const { 
   Text,
   TouchableOpacity,
   View,
@@ -18,25 +18,28 @@ var DayViewStageEvent = React.createClass({
   },
 
   render() {
-    var time = stringUtils.parseTime(this.props.datetime);
+    let time = stringUtils.parseTime(this.props.datetime);
 
     return (
       <TouchableOpacity onPress={this.props.onPress}>
         <View style={[styles.eventWrapper, this.props.selected ? styles.selected : ""]}>
-          <Text style={{textAlign: 'center'}}>{this.props.name}</Text>
-          <Text style={{textAlign: 'center', marginTop: 5}}>{time}</Text>
+          <Text style={styles.eventContent}>{this.props.name}</Text>
+          <Text style={[styles.eventContent, {marginTop: 5}]}>{time}</Text>
         </View>
       </TouchableOpacity>
     ); 
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   eventWrapper: {
     padding: 10,
     marginTop: 10,
     borderWidth: 1,
     backgroundColor: 'transparent'
+  },
+  eventContent: {
+    textAlign: 'center'
   },
   selected: {
     backgroundColor: 'green'

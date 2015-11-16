@@ -1,11 +1,11 @@
 const React = require('react-native'),
-  AsyncStorageActions = require("../actions/AsyncStorageActions"),
+  AsyncStorageActions = require('../actions/AsyncStorageActions'),
   StoreMixin = require('../mixins/StoreMixin'),
   NavBar = require('./NavBar'),
   Header = require('./Header'),
-  DayView = require("./DayView"),
-  _ = require("lodash"),
-  stringUtils = require("../utils/StringUtils");
+  DayView = require('./DayView'),
+  _ = require('lodash'),
+  stringUtils = require('../utils/StringUtils');
 
 const {
   ScrollView,
@@ -16,7 +16,7 @@ const {
   Navigator
 } = React;
 
-const App = React.createClass({
+var App = React.createClass({
   mixins: [StoreMixin],
 
   handleBackNav() {
@@ -39,15 +39,13 @@ const App = React.createClass({
    * @param {obj} timelineEvent - The pressed event.
    */
   handleTimelineEventPress(timelineEvent) {
-    // TODO: Probably a better functional way to do this.  Come up with structure-independent way.
     var eventDay = stringUtils.parseDatetime(timelineEvent.datetime),
       // Create copy of schedule to pass to `setState` after prop change.
       schedule = this.state.schedule,
       stages = _.get(_.find(schedule, {date: eventDay}), 'stages'),
       eventObj;
 
-    // TODO: Find a non-stupid way to do this.  Something like a deep _.findWhere
-    // (which is supposed to be deep per docs??) - https://lodash.com/docs#findWhere
+    // TODO: Find a non-stupid (functional) way to do this.  Something like a deep _.findWhere
     for (let i=0, l=stages.length; i<l; i++) {
       eventObj = _.find(stages[i].lineup, {id: timelineEvent.id});
       if (eventObj) break;
@@ -76,7 +74,7 @@ const App = React.createClass({
         <NavBar {...navBarProps} />
         <Header />   
         <Navigator
-          ref="navigator"
+          ref='navigator'
           initialRoute={{day: _.get(_.first(schedule), 'date')}}
           renderScene={(route, navigator) =>  
             <DayView 

@@ -1,4 +1,4 @@
-var Dispatcher = require("flux").Dispatcher;
-var Dispatcher = new Dispatcher();
+let Dispatcher = require('flux').Dispatcher;
+let dispatcher = new Dispatcher();
 
-module.exports = Dispatcher;
+module.exports = dispatcher;

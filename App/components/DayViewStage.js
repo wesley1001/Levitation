@@ -1,12 +1,12 @@
-var React = require("react-native"),
-  DayViewStageEvent = require("./DayViewStageEvent");
+const React = require('react-native'),
+  DayViewStageEvent = require('./DayViewStageEvent');
 
-var { 
+const { 
   View,
   StyleSheet
 } = React;
 
-var DayViewStage = React.createClass({
+let DayViewStage = React.createClass({
   propTypes: {
     stageId: React.PropTypes.number,
     lineup: React.PropTypes.array,
@@ -17,14 +17,17 @@ var DayViewStage = React.createClass({
     return (
       <View key={this.props.stageId} style={styles.column}>
         {this.props.lineup.map(timelineEvent => {
-          return <DayViewStageEvent key={timelineEvent.id} {...timelineEvent} onPress={this.props.eventPressHandler.bind(null, timelineEvent)} />
+          return <DayViewStageEvent 
+            key={timelineEvent.id} {...timelineEvent} 
+            onPress={this.props.eventPressHandler.bind(null, timelineEvent)} 
+          />
         })}
       </View>
     );
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   column: {
     flex: 1,
     flexDirection: 'column',

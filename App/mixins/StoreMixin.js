@@ -1,6 +1,6 @@
-const React = require("react-native"),
-  Store = require("../stores/Store"),
-  AsyncStorageActions = require("../actions/AsyncStorageActions"),
+const React = require('react-native'),
+  Store = require('../stores/Store'),
+  AsyncStorageActions = require('../actions/AsyncStorageActions'),
   ServerActions = require('../actions/ServerActions');
 
 const { AsyncStorage } = React;
@@ -14,9 +14,9 @@ function getStateFromStore() {
   };
 }
 
-const StoreMixin = {
+let StoreMixin = {
   getInitialState() {
-    var state = getStateFromStore();
+    let state = getStateFromStore();
     state.navIndex = 0; // Remove this from Store state eventually.
 
     return state;
@@ -28,7 +28,7 @@ const StoreMixin = {
   componentWillMount() {
     if (this.state.needsAsyncStorageFetch) {
       // Clear async data to simulate first open
-      AsyncStorage.clear();
+      //AsyncStorage.clear();
 
       AsyncStorageActions.getAsyncStorageData();  
     }

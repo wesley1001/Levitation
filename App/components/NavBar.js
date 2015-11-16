@@ -1,11 +1,12 @@
-const React = require("react-native"),
+const React = require('react-native'),
   stringUtils = require('../utils/StringUtils'),
-  _ = require("lodash");
+  _ = require('lodash');
 
 const { 
   View,
   TouchableOpacity,
-  Text
+  Text,
+  StyleSheet
 } = React;
 
 var NavBar = React.createClass({
@@ -17,7 +18,7 @@ var NavBar = React.createClass({
   },
 
   render() {
-    const dates = this.props.dates,
+    let dates = this.props.dates,
       navIndex = this.props.navIndex,
       parseDate = stringUtils.parseDate,
       lastDayIndex = _.indexOf(dates, _.last(dates)),
@@ -25,24 +26,42 @@ var NavBar = React.createClass({
       forwardNavText = `${parseDate(dates[navIndex + 1])} >`;
 
     return (
-      <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+      <View style={styles.container}>
         {navIndex > 0 &&
           <TouchableOpacity 
-            style={{alignSelf: 'flex-start', marginLeft: 5}} 
+            style={styles.backButton} 
             onPress={this.props.handleBackNav}>
             <Text>{backNavText}</Text>
           </TouchableOpacity>
         }
-        <View style={{flex: 1}}></View>
+        <View style={styles.spacer}></View>
         {navIndex !== lastDayIndex &&
           <TouchableOpacity 
-            style={{alignSelf: 'flex-end', marginRight: 5}} 
+            style={styles.forwardButton} 
             onPress={this.props.handleForwardNav}>
             <Text>{forwardNavText}</Text>
           </TouchableOpacity>
         }
       </View>
     );
+  }
+});
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'space-between', 
+    flexDirection: 'row'
+  },
+  backButton: {
+    alignSelf: 'flex-start', 
+    marginLeft: 5
+  },
+  spacer: {
+    flex: 1
+  },
+  forwardButton: {
+    alignSelf: 'flex-end', 
+    marginRight: 5
   }
 });
 
