@@ -8,10 +8,7 @@ const React = require('react-native'),
   stringUtils = require('../utils/StringUtils');
 
 const {
-  ScrollView,
   View,
-  Text,
-  TouchableOpacity,
   StyleSheet,
   Navigator
 } = React;
