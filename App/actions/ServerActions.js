@@ -5,7 +5,7 @@ const Dispatcher = require('../dispatchers/Dispatcher'),
   Store = require('../stores/Store'),
   StringUtils = require('../utils/StringUtils');
 
-let ServerActions = {
+const ServerActions = {
   // One-time data fetch from server
   fetchScheduleData() {
     console.log('Making server request');
@@ -14,7 +14,6 @@ let ServerActions = {
       .then((response) => {
         let payloadString = response._bodyText;
         let schedule = StringUtils.JSONParser(payloadString);
-        //console.log("server object", schedule);
         
         this._dispatchFetchSuccess(schedule);
 
