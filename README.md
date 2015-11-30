@@ -6,5 +6,10 @@ Wireframe schedling app created with React Native + Flux.
 
 iOS
 
+
 ![iOS](https://s3.eu-central-1.amazonaws.com/levitationnn/levitation-ios.gif)
+
+Android
+
+
 ![Android](https://s3.eu-central-1.amazonaws.com/levitationnn/levitation-android.gif)
