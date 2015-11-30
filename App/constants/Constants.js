@@ -2,10 +2,10 @@ var Constants = {
   ASYCSTORAGE_KEY: 'levitation',
   
   // Production
-  //FETCH_URL: 'https://palmtrees-server.herokuapp.com/',
+  FETCH_URL: 'https://palmtrees-server.herokuapp.com/',
   
   // iOS localhost
-  FETCH_URL: 'http://127.0.0.1:5000/',
+  //FETCH_URL: 'http://127.0.0.1:5000/',
   
   // Android VM IP for localhost
   //FETCH_URL: 'http://10.0.3.2:5000/',
