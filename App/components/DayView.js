@@ -21,22 +21,26 @@ var DayView = React.createClass({
 
     return (
       <View>
-      <View style={[styles.row, {justifyContent: 'center'}]}>
-        <Text style={styles.day}>{stringUtils.parseDate(day)}</Text>
-      </View>
-      <ScrollView contentContainerSyle={styles.contentContainer}>
-        <View style={styles.row}>
-          {stages.map((stage, i) => {
-            return <DayViewStage key={i} {...stage} {...other} />
-          })}
+        <View style={[styles.row, {justifyContent: 'center'}]}>
+          <Text style={styles.day}>{stringUtils.parseDate(day)}</Text>
         </View>
-      </ScrollView>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <View style={styles.row}>
+            {stages.map((stage, i) => {
+              return <DayViewStage key={i} {...stage} {...other} />
+            })}
+          </View>
+        </ScrollView>
       </View>
     );
   }
 });
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   row: {
     flex: 1,
     flexDirection: 'row'
